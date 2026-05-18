@@ -1,57 +1,69 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/python-3.10+-blue?logo=python&logoColor=white">
-    <img alt="Python" src="https://img.shields.io/badge/python-3.10+-blue?logo=python&logoColor=white">
-  </picture>
-  <img src="https://img.shields.io/badge/license-MIT-green">
-  <img src="https://img.shields.io/badge/ollama-required-orange?logo=ollama">
-  <img src="https://img.shields.io/badge/streamlit-3.0-red?logo=streamlit">
-  <img src="https://img.shields.io/badge/crewai-powered-6c5ce7">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/CrewAI-Framework-ff69b4?style=for-the-badge" alt="CrewAI">
+  <img src="https://img.shields.io/badge/Ollama-Local%20LLMs-orange?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama">
+  <img src="https://img.shields.io/badge/Streamlit-UI-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
 </p>
 
-<h1 align="center">🤖 Multi-Agent AI Documenter & Optimizer</h1>
-<p align="center"><em>Transform any source code into professional documentation — fully offline, powered by local LLMs.</em></p>
+<h1 align="center">🔮 Multi-Agent AI Documenter & Optimizer</h1>
+<p align="center"><em>Transform any source code into professional documentation and optimization audits — fully offline, powered by local LLMs.</em></p>
+
+---
+
+## 🚀 Key Highlights
+
+- **100% Privacy & Offline-First** — Zero external API calls. Your code never leaves your machine.
+- **Dual-Phase Execution Engine** — Prevents VRAM overflow and context saturation by isolating heavy agent tasks into two decoupled phases.
+- **Hardware-Aware UI** — Real-time GPU temperature, VRAM utilization, and agent activity trackers embedded in the dashboard.
+- **Granular Hyperparameter Control** — Adjust independent temperatures per agent (from strict analytical to highly creative prose).
 
 ---
 
 ## 🔍 Overview
 
-AI Documenter is a **dual-phase autonomous system** that analyzes source code and produces two deliverables:
+The system analyzes source code and produces two deliverables through an intelligent, sequential pipeline:
 
 | Phase | Output | Agent Crew |
 |---|---|---|
 | **1. Documentation** | A complete `README.md` with description, installation, usage, and technical features | Analyst → Planner → Seeker → Writer |
-| **2. Optimization** | A code audit report with performance bottlenecks, bugs, and actionable fixes | Optimizer |
+| **2. Optimization** | A code audit report with performance bottlenecks, bugs, and actionable fixes | Optimizer (isolated) |
 
-It runs **100% offline** using Ollama-hosted models — no API keys, no internet dependency once models are pulled.
+### 🧠 Dual-Phase Workflow
+
+To operate smoothly on consumer-grade hardware (NVIDIA GPUs with 2GB+ VRAM), execution is decoupled into two isolated phases:
+
+1. **Phase 1 — Documentation Crew (Multi-Agent Sequential):** The Analyst, Planner, Seeker, and Writer form a cooperative pipeline. They map code structure, search documentation via DuckDuckGo, and compile a professional README.md.
+
+2. **Phase 2 — Optimization Crew (Isolated Auditing):** Once Phase 1 finishes, its context is released from VRAM, and a single specialized Optimizer agent runs independently. This prevents context blending and eliminates OOM crashes.
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                    Streamlit UI (8501)                    │
-│  ┌────────────┐  ┌──────────────┐  ┌──────────────────┐ │
-│  │   Sidebar  │  │  Main Panel  │  │ Activity Log     │ │
-│  │  (Config)  │  │  (Editor)    │  │ (Live Agent Tx)  │ │
-│  └────────────┘  └──────────────┘  └──────────────────┘ │
-│  ┌──────────────────────────────────────────────────────┐ │
-│  │              GPU Live Monitor (8502)                  │ │
-│  └──────────────────────────────────────────────────────┘ │
-└──────────────────────┬───────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│                  Streamlit UI (8501)                  │
+│  ┌──────────┐  ┌──────────┐  ┌────────────────────┐ │
+│  │ Sidebar  │  │  Main    │  │ Activity Monitor   │ │
+│  │ (Config) │  │ (Editor) │  │ (Live Agent Logs)  │ │
+│  └──────────┘  └──────────┘  └────────────────────┘ │
+│  ┌───────────────────────────────────────────────┐   │
+│  │              GPU Live Monitor (8502)           │   │
+│  └───────────────────────────────────────────────┘   │
+└──────────────────────┬───────────────────────────────┘
                        │
-┌──────────────────────▼───────────────────────────────────┐
-│                    CrewAI Engine                          │
-│                                                          │
-│  ┌──────────┐  ┌──────────┐  ┌────────┐  ┌──────────┐  │
-│  │ Analyst  │→ │ Planner  │→ │ Seeker │→ │  Writer  │  │
-│  └──────────┘  └──────────┘  └────────┘  └──────────┘  │
-│                                                          │
-│  ┌────────────┐                                          │
-│  │ Optimizer  │  (Phase 2, runs independently)           │
-│  └────────────┘                                          │
-└──────────────────────┬───────────────────────────────────┘
+┌──────────────────────▼───────────────────────────────┐
+│                   CrewAI Engine                       │
+│                                                       │
+│  ┌──────────┐  ┌──────────┐  ┌────────┐  ┌────────┐ │
+│  │ Analyst  │→ │ Planner  │→ │ Seeker │→ │ Writer │ │
+│  └──────────┘  └──────────┘  └────────┘  └────────┘ │
+│                                                       │
+│  ┌────────────┐                                       │
+│  │ Optimizer  │  (Phase 2 — isolated)                 │
+│  └────────────┘                                       │
+└──────────────────────┬───────────────────────────────┘
                        │
               ┌────────▼────────┐
               │   Ollama API    │
@@ -63,15 +75,13 @@ It runs **100% offline** using Ollama-hosted models — no API keys, no internet
 
 ## 🤖 Agent Crew
 
-Each agent has a single responsibility and uses a configurable local LLM:
-
-| Agent | Model (default) | Temperature | Responsibility |
+| Agent | Model (default) | Temp | Core Responsibility |
 |---|---|---|---|
-| **Analyst** | `phi3:mini` | 0.1 | Extracts classes, methods, imports, and execution flow |
-| **Planner** | `phi3:mini` | 0.2 | Generates targeted search queries for external dependencies |
-| **Seeker** | `qwen2.5-coder:1.5b` | 0.1 | Executes DuckDuckGo searches for documentation & install commands |
-| **Writer** | `llama3.2` | 0.2 | Composes a polished README.md following a strict template |
-| **Optimizer** | `phi3:mini` | 0.2 | Audits code for performance, security, and maintainability issues |
+| 🔍 **Analyst** | `phi3:mini` | 0.1 | Extracts architecture, imports, classes, methods, and execution flow |
+| 🎯 **Planner** | `phi3:mini` | 0.2 | Deconstructs dependencies into optimized search queries |
+| 🌐 **Seeker** | `qwen2.5-coder:1.5b` | 0.1 | Executes DuckDuckGo searches; scrapes documentation and install commands |
+| ✍️ **Writer** | `llama3.2` | 0.2 | Synthesizes all inputs into a polished, markdown-compliant README.md |
+| 🔮 **Optimizer** | `phi3:mini` | 0.2 | Audits code for performance bottlenecks, memory leaks, and bad practices |
 
 > 💡 **Expert Mode** unlocks full control over model selection and temperature per agent.
 
@@ -83,7 +93,7 @@ Each agent has a single responsibility and uses a configurable local LLM:
 
 - Python 3.10+
 - [Ollama](https://ollama.ai) installed and running
-- At least one model pulled (recommended: `phi3:mini`, `llama3.2`, `qwen2.5-coder:1.5b`)
+- NVIDIA GPU recommended (2GB+ VRAM minimum)
 
 ### Installation
 
@@ -93,13 +103,15 @@ git clone https://github.com/marcovegabcb/LocalAgent-DevMind.git
 cd LocalAgent-DevMind
 
 # Virtual environment
-python -m venv venv
-source venv/bin/activate   # Linux/macOS
+python -m venv .venv
+source .venv/bin/activate     # Linux/macOS
+# .venv\Scripts\activate      # Windows
 
-# Dependencies
+# Install dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 
-# Pull models (adjust based on your VRAM)
+# Pull lightweight models (adjust based on your VRAM)
 ollama pull phi3:mini
 ollama pull llama3.2
 ollama pull qwen2.5-coder:1.5b
@@ -127,12 +139,12 @@ streamlit run ui/dashboard.py --server.port 8501
 
 ## 📖 Usage Walkthrough
 
-1. **Select code** — Upload a file or pick an example from the built-in library
-2. **Configure** — Toggle Expert Mode in the sidebar to customize agents
-3. **Analyze** — Click *Start Analysis*; the activity monitor shows real-time agent communication
-4. **Review** — The generated README appears instantly; optimization feedback follows shortly after
+1. **Load Code** — Upload a file or pick an example from the built-in library
+2. **Configure** — Toggle **Expert Mode** in the sidebar to assign specific models and temperatures per agent
+3. **Analyze** — Click **🚀 Start Analysis**; the Activity Monitor shows real-time agent communication and progress
+4. **Export** — Review the generated README and optimization audit; use the built-in download buttons to export instantly
 
-### Example Output
+### Example
 
 The system takes raw source code like this `web_scraper.py`:
 
@@ -145,9 +157,11 @@ def fetch_top_stories(url):
     soup = BeautifulSoup(response.text, 'html.parser')
     headlines = [h.get_text() for h in soup.find_all('h2')[:5]]
     return headlines
+
+print(fetch_top_stories("https://news.ycombinator.com"))
 ```
 
-And produces a complete `README.md` with installation instructions, usage examples, and a dependency table.
+And produces a complete `README.md` with installation instructions, usage examples, and a dependency table — plus an optimization audit identifying potential improvements.
 
 ---
 
@@ -155,12 +169,11 @@ And produces a complete `README.md` with installation instructions, usage exampl
 
 | Feature | Description |
 |---|---|
-| **Offline-first** | All LLM inference runs locally via Ollama — zero data leaves your machine |
-| **Sequential pipeline** | Agents pass context forward, preventing VRAM overload on consumer GPUs |
-| **GPU monitoring** | Live temperature and VRAM tracking embedded in the dashboard |
-| **Dual-phase** | Documentation + optimization in a single click |
+| **100% Offline** | All LLM inference runs locally via Ollama — zero data leaves your machine |
+| **Dual-Phase Pipeline** | Documentation + optimization in a single click, with automatic context isolation |
+| **GPU Monitoring** | Live temperature and VRAM tracking embedded in the dashboard |
 | **Expert Mode** | Fine-grained control over agent selection and creativity (temperature) |
-| **Multi-language** | Supports Python, JavaScript, TypeScript, Java, C++, Go, Rust, and 30+ more |
+| **Multi-Language** | Supports Python, JavaScript, TypeScript, Java, C++, Go, Rust, and 30+ more |
 | **Extensible** | Plugin-ready agent and tool architecture via CrewAI |
 
 ---
@@ -183,13 +196,13 @@ And produces a complete `README.md` with installation instructions, usage exampl
 LocalAgent-DevMind/
 ├── app/
 │   ├── agents/          # Agent definitions (Analyst, Planner, Seeker, Writer, Optimizer)
-│   ├── tasks/           # Task definitions with prompts for each agent
+│   ├── tasks/           # Task definitions with strict prompts for each agent
 │   ├── tools/           # Custom tools (web search, etc.)
-│   └── crew.py          # Crew orchestration (Phase 1 & Phase 2)
+│   └── crew.py          # Dual-phase orchestration (run_documenter_crew, run_optimizer_crew)
 ├── ui/
-│   ├── components/      # Streamlit UI components
+│   ├── components/      # Modular Streamlit components (sidebar, monitors, viewers)
 │   ├── dashboard.py     # Main application entrypoint
-│   └── gpu_live.py      # Standalone GPU monitor
+│   └── gpu_live.py      # Standalone GPU monitor (port 8502)
 ├── examples/            # Sample code files for testing
 ├── requirements.txt     # Python dependencies
 ├── start_app.sh         # Launcher script
@@ -216,4 +229,4 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## 📄 License
 
-MIT — see [LICENSE](LICENSE) for details.
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
