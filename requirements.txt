@@ -1,0 +1,12 @@
+# Core
+crewai
+langchain-ollama
+langchain-community
+duckduckgo-search
+
+# UI
+streamlit
+
+# Examples
+requests
+beautifulsoup4
