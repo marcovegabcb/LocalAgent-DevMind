@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
 </p>
 
-<h1 align="center">🔮 Multi-Agent AI Documenter & Optimizer</h1>
+<h1 align="center">🤖  Multi-Agent AI Documenter & Optimizer</h1>
 <p align="center"><em>Transform any source code into professional documentation and optimization audits — fully offline, powered by local LLMs.</em></p>
 
 ---
@@ -39,39 +39,10 @@ To operate smoothly on consumer-grade hardware (NVIDIA GPUs with 2GB+ VRAM), exe
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
 
-```
-┌──────────────────────────────────────────────────────┐
-│                  Streamlit UI (8501)                  │
-│  ┌──────────┐  ┌──────────┐  ┌────────────────────┐ │
-│  │ Sidebar  │  │  Main    │  │ Activity Monitor   │ │
-│  │ (Config) │  │ (Editor) │  │ (Live Agent Logs)  │ │
-│  └──────────┘  └──────────┘  └────────────────────┘ │
-│  ┌───────────────────────────────────────────────┐   │
-│  │              GPU Live Monitor (8502)           │   │
-│  └───────────────────────────────────────────────┘   │
-└──────────────────────┬───────────────────────────────┘
-                       │
-┌──────────────────────▼───────────────────────────────┐
-│                   CrewAI Engine                       │
-│                                                       │
-│  ┌──────────┐  ┌──────────┐  ┌────────┐  ┌────────┐ │
-│  │ Analyst  │→ │ Planner  │→ │ Seeker │→ │ Writer │ │
-│  └──────────┘  └──────────┘  └────────┘  └────────┘ │
-│                                                       │
-│  ┌────────────┐                                       │
-│  │ Optimizer  │  (Phase 2 — isolated)                 │
-│  └────────────┘                                       │
-└──────────────────────┬───────────────────────────────┘
-                       │
-              ┌────────▼────────┐
-              │   Ollama API    │
-              │  localhost:11434│
-              └─────────────────┘
-```
+<img width="1166" height="925" alt="imagen" src="https://github.com/user-attachments/assets/efe807a1-e1aa-4ce7-943d-ba24a2223a58" />
 
----
 
 ## 🤖 Agent Crew
 
@@ -219,11 +190,6 @@ LocalAgent-DevMind/
 - [ ] Multi-language README generation
 - [ ] VS Code extension
 
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ---
 
