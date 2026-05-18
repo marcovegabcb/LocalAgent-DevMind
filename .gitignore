@@ -1,9 +1,12 @@
 __pycache__/
 *.pyc
 *.pyo
-venv/
+.venv/             
+venv/             
 .env
 *.local
 .current_status
+
+# Opcionales (Dado que confirmamos que ya no los usas en el Dashboard)
 input_code/
 output/
