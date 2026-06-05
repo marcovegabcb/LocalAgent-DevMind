@@ -161,11 +161,11 @@ And produces a complete `README.md` with installation instructions, usage exampl
 >
 > ## Technical Features
 >
-> | Library | Purpose | Installation |
-> |---|---|---|
-> | `requests` | HTTP request handling | `pip install requests` |
-> | `Pillow` | Image processing | `pip install pillow` |
-> | `io.BytesIO` | In-memory bytes buffer | Built-in (no install) |
+> | Library | Purpose | Installation | Official Docs |
+> |---|---|---|---|
+> | `requests` | HTTP request handling | `pip install requests` | [docs.python-requests.org](https://docs.python-requests.org/en/latest/) |
+> | `Pillow` | Image processing | `pip install pillow` | [pillow.readthedocs.io](https://pillow.readthedocs.io/en/stable/) |
+> | `io.BytesIO` | In-memory bytes buffer | Built-in (no install) | [docs.python.org](https://docs.python.org/3/library/io.html#module-io) |
 
 **Generated Optimization:**
 
