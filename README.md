@@ -117,22 +117,82 @@ streamlit run ui/dashboard.py --server.port 8501
 
 ### Example
 
-The system takes raw source code like this `web_scraper.py`:
+The system takes raw source code like this `image_downloader.py`:
 
 ```python
 import requests
-from bs4 import BeautifulSoup
+from PIL import Image
+from io import BytesIO
 
-def fetch_top_stories(url):
-    response = requests.get(url, timeout=5)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    headlines = [h.get_text() for h in soup.find_all('h2')[:5]]
-    return headlines
+def download_and_show_image(url):
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    print(f"Imagen descargada: {img.size} - {img.mode}")
+    return img
 
-print(fetch_top_stories("https://news.ycombinator.com"))
+img = download_and_show_image("https://via.placeholder.com/150")
+print("Tamaño:", img.size)
 ```
 
 And produces a complete `README.md` with installation instructions, usage examples, and a dependency table — plus an optimization audit identifying potential improvements.
+
+**Generated README:**
+
+> # ImageDownloader
+>
+> ## Description
+>
+> This Python script downloads an image from a specified URL and prints its size (width x height) along with the mode of the image to standard output for immediate verification before returning it for further use. It leverages third-party libraries such as `requests` for HTTP requests, `PIL`'s Image module for handling images in memory, and `BytesIO` from Python's standard library for creating an in-memory bytes buffer to hold image data temporarily during the download process.
+>
+> ## Installation
+>
+> ```bash
+> pip install requests pillow
+> ```
+>
+> ## Usage
+>
+> ```python
+> from image_downloader import download_and_show_image
+>
+> img = download_and_show_image("https://via.placeholder.com/150")
+> print(f"Tamaño: {img.size}")
+> ```
+>
+> ## Technical Features
+>
+> | Library | Purpose | Installation |
+> |---|---|---|
+> | `requests` | HTTP request handling | `pip install requests` |
+> | `Pillow` | Image processing | `pip install pillow` |
+> | `io.BytesIO` | In-memory bytes buffer | Built-in (no install) |
+
+**Generated Optimization:**
+
+> **Suggested improvements:**
+>
+> - Use context managers to handle HTTP requests and image processing resources.
+> - Implement error handling for network issues or unsuccessful downloads.
+> - Close the `BytesIO` object after use to optimize memory usage.
+>
+> **Refactored code:**
+>
+> ```python
+> import requests
+> from PIL import Image
+> from io import BytesIO
+>
+> def download_and_show_image(url):
+>     try:
+>         with requests.get(url, timeout=10) as response:
+>             response.raise_for_status()
+>             img = Image.open(BytesIO(response.content))
+>             print(f"Imagen descargada: {img.size} - {img.mode}")
+>             return img
+>     except requests.RequestException as e:
+>         print(f"Error al descargar la imagen: {e}")
+>         return None
+> ```
 
 ---
 

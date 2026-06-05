@@ -20,6 +20,7 @@ def create_writer_agent(selected_model, language, temp):
         - Consistency: Use the EXACT class and function names provided by the Analyst.
         - Content: Be thorough but relevant. If the project is small, be concise; if it is complex, provide detail.
         - Cleanliness: Filter out any metadata, agent conversation traces, or "hypothetical" remarks.
+        - STRICT: Never include unrelated content, math problems, random facts, or anything not directly about the code.
         - Tone: Professional, objective, and developer-oriented.""",
         llm=native_llm,
         verbose=True,
